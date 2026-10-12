@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Evolução 3D, simulador de seleção natural (@filho.af)</title>
+<meta name="description" content="Simulador de seleção natural em 3D: criaturas buscam comida numa ilha, herdam traços com mutação e evoluem. Funciona no navegador, sem instalar nada.">
+<meta name="theme-color" content="#bfe4ff">
+<meta name="color-scheme" content="light">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Evolução 3D, simulador de seleção natural">
+<meta property="og:description" content="Criaturas buscam comida numa ilha, herdam traços com mutação e evoluem. Mude o clima, provoque secas e veja a seleção natural acontecer.">
+<meta property="og:image" content="assets/og-imagem.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/estilo.css">
+<link rel="stylesheet" href="css/intro.css">
+</head>
+<body>
+<div id="intro" role="dialog" aria-label="Abertura: Evolução, laboratório de seleção natural, por Francisco Audir">
+  <svg viewBox="0 0 64 64" aria-hidden="true">
+    <g class="areia"><circle cx="32" cy="32" r="30" fill="#F3E2AB" stroke="#E3CB86" stroke-width="1.2"/></g>
+    <g class="ilha"><circle cx="32" cy="32" r="23.5" fill="#2F9A5E"/></g>
+    <circle class="brilho" cx="26" cy="25" r="12" fill="#4DB577" opacity=".35"/>
+    <path class="tronco" pathLength="1" d="M32 55.5V39" stroke="#fff" stroke-width="4.6" stroke-linecap="round" fill="none"/>
+    <path class="ramo" pathLength="1" d="M32 39L20 23" stroke="#fff" stroke-width="4.6" stroke-linecap="round" fill="none"/>
+    <path class="ramo" pathLength="1" d="M32 39L44 23" stroke="#fff" stroke-width="4.6" stroke-linecap="round" fill="none"/>
+    <path class="extinto" pathLength="1" d="M32 48L41 42.5" stroke="#fff" stroke-width="2.85" stroke-linecap="round" opacity=".7" fill="none"/>
+    <circle class="ponta az" cx="20" cy="23" r="5.4" fill="#38BDF8" stroke="#fff" stroke-width="2.2"/>
+    <circle class="ponta ro" cx="44" cy="23" r="5.4" fill="#FB7185" stroke="#fff" stroke-width="2.2"/>
+  </svg>
+  <h1>Evolução</h1>
+  <p class="sub">laboratório de seleção natural</p>
+  <p class="autor">por <b>Francisco Audir</b></p>
+  <p class="pular">toque para começar</p>
+</div>
+<script src="js/intro.js"></script>
+<canvas id="c" role="img" aria-label="Ilha 3D com criaturas evoluindo"></canvas>
+<div id="sr" class="sr-only" role="status" aria-live="polite" aria-atomic="true"></div>
+<div id="tilt"></div>
+
+<div id="brand" class="panel">
+  <svg class="logo" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Símbolo do Evolução: ilha com uma linhagem que se divide em azul e rosa">
+    <circle cx="32" cy="32" r="30" fill="#F3E2AB" stroke="#E3CB86" stroke-width="1.2"/><circle cx="32" cy="32" r="23.5" fill="#2F9A5E"/><circle cx="26" cy="25" r="12" fill="#4DB577" opacity=".35"/>
+    <path d="M32 55.5V39M32 39L20 23M32 39L44 23" stroke="#fff" stroke-width="4.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M32 48L41 42.5" stroke="#fff" stroke-width="2.85" stroke-linecap="round" opacity=".7"/>
+    <circle cx="20" cy="23" r="5.4" fill="#38BDF8" stroke="#fff" stroke-width="2.2"/><circle cx="44" cy="23" r="5.4" fill="#FB7185" stroke="#fff" stroke-width="2.2"/>
+  </svg>
+  <div>
+    <h1>Evolução</h1>
+    <p>laboratório de seleção natural</p>
+    <a class="ig" href="https://instagram.com/filho.af" target="_blank" rel="noopener">@filho.af</a>
+  </div>
+</div>
+
+<div id="fabs"><button class="btn" id="fSet">Ajustes</button><button class="btn" id="fCharts">Gráficos</button><button class="btn" id="fLivre" aria-label="Explorar a ilha">Explorar</button></div>
+
+<div id="hud" class="panel">
+  <span class="day">Dia <b id="hDay">1</b></span>
+  <span class="sep"></span>
+  <span id="hPhase">Amanhecendo</span>
+  <span class="sep"></span>
+  <span class="sp"><i style="background:var(--azul)"></i>Azuis <b id="nA">0</b></span>
+  <span class="sp" id="spB"><i style="background:var(--rosa)"></i>Rosas <b id="nB">0</b></span>
+  <span class="sep"></span>
+  <span class="sp">Frutas <b id="nF">0</b></span>
+  <span class="sep"></span>
+  <span class="sp">Clima <b id="nT">Ameno</b></span>
+</div>
+
+<aside id="ctrl" class="panel">
+  <div class="top">
+    <button id="bPlay" class="btn main">Pausar</button>
+    <div class="spd" id="spd" role="group" aria-label="Velocidade da simulação">
+      <button data-s="1">1×</button><button data-s="3" class="on">3×</button><button data-s="10">10×</button><button data-s="30">30×</button>
+    </div>
+    <button id="bSom" class="btn ico" aria-label="Som" aria-keyshortcuts="M"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h4l5-4v14l-5-4H4z" fill="currentColor"/><path class="onda" d="M16 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/><path class="x" d="M16 9l5 6M21 9l-5 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
+  </div>
+  <div id="cbody">
+  <h2 class="sec">Experimento</h2>
+  <label class="fld">Cenário
+    <select id="preset">
+      <option value="padrao">Azuis contra rosas</option>
+      <option value="escassez">Pouca comida</option>
+      <option value="fartura">Muita comida</option>
+      <option value="clones">Sem mutação (clones)</option>
+      <option value="solo">Só os azuis</option>
+      <option value="gelo">Era do gelo</option>
+      <option value="lago">Lagos e sede</option>
+      <option value="predacao">Predação: rosas caçam azuis</option>
+      <option value="caos">Eventos aleatórios</option>
+      <option value="secas">Secas seguidas numa ilha</option>
+      <optgroup label="Inspirados em eventos reais (bem simplificados)">
+        <option value="asteroide">Inverno do asteroide</option>
+        <option value="aquec">Aquecimento global</option>
+      </optgroup>
+    </select>
+  </label>
+  <div class="row"><label for="seed">Seed <small id="seedNow"></small></label>
+    <div class="seedrow"><input class="setup" type="text" id="seed" inputmode="numeric" maxlength="10" placeholder="aleatória" autocomplete="off" aria-describedby="seedNow"><button class="btn sm" id="bRepeat" title="Recomeça com a mesma seed, a mesma configuração inicial e os mesmos eventos manuais">Repetir</button></div>
+  </div>
+  <h2 class="sec">População e ambiente</h2>
+  <div class="row"><label>Frutas por dia <b id="v_food"></b></label><input class="live" type="range" id="food" min="10" max="150" step="5"></div>
+  <div class="row chk"><label><input class="live" type="checkbox" id="mutOn"> Mutação ligada</label></div>
+  <div class="row"><label>Força da mutação <b id="v_mut"></b></label><input class="live" type="range" id="mut" min="2" max="40" step="1"></div>
+  <div class="row chk"><label><input class="setup" type="checkbox" id="bOn"> Incluir as rosas</label></div>
+  <div class="row"><label>Azuis no início <b id="v_popA"></b></label><input class="setup" type="range" id="popA" min="2" max="30" step="1"></div>
+  <div class="row"><label>Rosas no início <b id="v_popB"></b></label><input class="setup" type="range" id="popB" min="2" max="30" step="1"></div>
+  <div class="evt">
+    <b>Eventos</b>
+    <div class="evg">
+      <button class="btn sm" data-ev="seca">Seca</button><button class="btn sm" data-ev="chuva">Chuva</button><button class="btn sm" data-ev="radiacao">Radiação</button>
+      <button class="btn sm" data-ev="frio">Frio</button><button class="btn sm" data-ev="calor">Calor</button><button class="btn sm" data-ev="ameno">Ameno</button>
+      <button class="btn sm" data-ev="extincao" style="grid-column:1/-1">Extinção em massa</button>
+    </div>
+  </div>
+  <h2 class="sec">Regras</h2>
+  <div class="row chk"><label><input class="live" type="checkbox" id="rand"> Eventos aleatórios</label></div>
+  <div class="row chk"><label><input class="live" type="checkbox" id="pred"> Predação: rosas viram caçadoras de azuis</label></div>
+  <div class="row chk"><label><input class="live" type="checkbox" id="water"> Lagos e sede (beber ajuda a ter filhos)</label></div>
+  <details><summary>Traços iniciais dos azuis</summary><div id="trA"></div></details>
+  <details><summary>Traços iniciais das rosas</summary><div id="trB"></div></details>
+  <details>
+    <summary>Como funciona</summary>
+    <p>Todo dia nascem frutas pela ilha. As criaturas saem da areia (a casa), procuram comida e precisam voltar antes de a energia acabar.</p>
+    <p>Voltou com 2 frutas: tem um filho. Com 1 fruta: sobrevive. Sem fruta ou sem voltar: morre.</p>
+    <p>Ser rápido, grande ou enxergar longe custa energia. Quando duas criaturas tocam a mesma fruta ao mesmo tempo, a maior tem mais chance de ficar com ela.</p>
+    <p>Vales são férteis (mais frutas) e picos têm poucas. Quanto mais alto, mais frio. Bagas azuis crescem nos vales e frutas douradas nos morros dão energia extra. Subir ladeiras gasta energia extra. Use Editar terreno e arraste sobre a ilha para criar morros e vales.</p>
+    <p>Cada criatura tem um clima ideal. Quanto mais longe do clima do dia, mais energia ela gasta. Provoque frio, calor ou seca e veja quem se adapta.</p>
+    <p>Os filhos nascem com pequenas mutações, e quem se dá melhor naquele ambiente deixa mais descendentes.</p>
+  </details>
+  <h2 class="sec">Visual</h2>
+  <div class="row chk"><label><input type="checkbox" id="autoRot"> Girar a câmera sozinha</label></div>
+  <div class="row chk"><label><input type="checkbox" id="bloom" checked> Brilho (bloom)</label></div>
+  <label class="fld">Qualidade gráfica
+    <select id="quality"><option value="auto">Automática</option><option value="2">Alta</option><option value="1">Média</option><option value="0">Baixa</option></select>
+  </label>
+  <div class="evt">
+    <b>Terreno</b>
+    <select id="terr" aria-label="Tipo de terreno"><option value="suave">Relevo suave</option><option value="plano">Plano</option><option value="montanha">Montanha central</option><option value="vales">Colinas e vales</option><option value="custom" hidden>Personalizado</option></select>
+    <div class="evg" style="grid-template-columns:1fr 1fr;margin-top:6px"><button class="btn sm" id="bEdit">Editar terreno</button><button class="btn sm" id="bEditMode">Subir</button><button class="btn sm" id="bUndo" style="grid-column:1/-1">Desfazer pincelada</button></div>
+  </div>
+  <h2 class="sec">Dados</h2>
+  <button id="bSum" class="btn" aria-keyshortcuts="R">Resumo em texto (R)</button>
+  <button id="bIO" class="btn">Dados e cenário (JSON)</button>
+  <button id="bReset" class="btn">Recomeçar</button>
+  </div>
+</aside>
+
+<div id="charts" class="panel">
+  <h3>População</h3>
+  <canvas id="chPop"></canvas>
+  <div class="lg"><span><i style="background:var(--azul)"></i>Azuis</span><span><i style="background:repeating-linear-gradient(90deg,var(--rosa) 0 4px,transparent 4px 6px)"></i>Rosas</span></div>
+  <div class="gap"></div>
+  <h3>Traços médios
+    <select id="trSel" aria-label="Espécie do gráfico de traços"><option value="2">Todos</option><option value="0">Azuis</option><option value="1">Rosas</option></select>
+  </h3>
+  <canvas id="chTr"></canvas>
+  <div class="lg"><span><i style="background:#f59e0b"></i>Velocidade</span><span><i style="background:#8b5cf6"></i>Tamanho</span><span><i style="background:#10b981"></i>Visão</span></div>
+  <div class="gap"></div>
+  <h3>Clima e adaptação</h3>
+  <canvas id="chClim"></canvas>
+  <div class="lg"><span><i style="background:#334155"></i>Clima do dia</span><span><i style="background:#ef4444"></i>Clima ideal médio</span></div>
+  <div class="gap"></div>
+  <h3>Distribuição dos genes
+    <select id="hSel" aria-label="Gene do histograma"><option value="speed">Velocidade</option><option value="size">Tamanho</option><option value="sense">Visão</option><option value="temp">Clima ideal</option></select>
+  </h3>
+  <canvas id="chHist"></canvas>
+  <div class="lg" id="hall" style="flex-direction:column;gap:2px"></div>
+</div>
+
+<div id="info" class="panel"></div>
+<div id="foot">Arraste para girar, role para aproximar, clique numa criatura. Espaço pausa. Feito por <a href="https://instagram.com/filho.af" target="_blank" rel="noopener">@filho.af</a></div>
+<button class="btn" id="bHide">Ocultar interface (H)</button>
+<button class="btn" id="bLivre" aria-keyshortcuts="F">Explorar a ilha (F)</button>
+<div id="livreUI">
+  <div class="lvTop panel">
+    <b>Explorar</b>
+    <div class="lvModo" role="group" aria-label="Modo da câmera"><button class="btn" id="lvAndar">Andar</button><button class="btn" id="lvVoar">Voar</button></div>
+    <button class="btn main" id="lvSair">Sair (Esc)</button>
+  </div>
+  <p class="dica"></p>
+  <div id="lvStick"><div id="lvKnob"></div></div>
+  <div class="lvVoo"><button class="btn" id="lvSobe" aria-label="Subir">▲</button><button class="btn" id="lvDesce" aria-label="Descer">▼</button></div>
+  <div class="mira"></div>
+</div>
+<div id="tour"><div class="box"><svg class="tlogo" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <circle cx="32" cy="32" r="30" fill="#F3E2AB" stroke="#E3CB86" stroke-width="1.2"/><circle cx="32" cy="32" r="23.5" fill="#2F9A5E"/><circle cx="26" cy="25" r="12" fill="#4DB577" opacity=".35"/>
+    <path d="M32 55.5V39M32 39L20 23M32 39L44 23" stroke="#fff" stroke-width="4.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M32 48L41 42.5" stroke="#fff" stroke-width="2.85" stroke-linecap="round" opacity=".7"/>
+    <circle cx="20" cy="23" r="5.4" fill="#38BDF8" stroke="#fff" stroke-width="2.2"/><circle cx="44" cy="23" r="5.4" fill="#FB7185" stroke="#fff" stroke-width="2.2"/>
+  </svg><h2 id="tT"></h2><p id="tP"></p><div class="tb"><button class="btn" id="tSkip">Pular</button><button class="btn main" id="tNext">Próximo</button></div></div></div>
+<div id="io"><div class="box"><b>Dados e cenário</b><p class="iohelp">diario.csv: uma linha por dia, por espécie, com média, desvio-padrão, nascimentos e mortes por causa. individuos.csv: cada criatura com pai, nascimento, morte e causa. cenario.json: seed, configuração e ações para repetir a execução.</p><textarea id="ioT" spellcheck="false"></textarea><div class="tb"><button class="btn sm" id="ioCsv">Ver dados (CSV)</button><button class="btn sm" id="ioJson">Ver cenário (JSON)</button><button class="btn sm" id="ioApply">Aplicar este JSON</button><button class="btn sm" id="ioCopy">Copiar</button><button class="btn sm" id="ioClose">Fechar</button></div><div class="tb" style="margin-top:6px"><button class="btn sm" id="dlDia">Baixar diario.csv</button><button class="btn sm" id="dlInd">Baixar individuos.csv</button><button class="btn sm" id="dlCen">Baixar cenario.json</button></div></div></div>
+<div id="toast"></div>
+<div id="over"><div class="box"><h2 id="overT">Extinção total</h2><p id="overP"></p><button class="btn main" id="overB" style="width:100%">Recomeçar</button></div></div>
+<div id="err"><div class="box"><h2>Não carregou o Three.js</h2><p>O arquivo vendor/three-r128/three.min.js não foi encontrado. Abra o index.html de dentro da pasta completa do projeto (com a pasta vendor ao lado).</p></div></div>
+
+<!-- Three.js r128 copiado do pacote npm three@0.128.0 (decisão D6): funciona offline e via file:// -->
+<script src="vendor/three-r128/three.min.js"></script>
+<script src="vendor/three-r128/shaders/CopyShader.js"></script>
+<script src="vendor/three-r128/shaders/LuminosityHighPassShader.js"></script>
+<script src="vendor/three-r128/postprocessing/EffectComposer.js"></script>
+<script src="vendor/three-r128/postprocessing/RenderPass.js"></script>
+<script src="vendor/three-r128/postprocessing/ShaderPass.js"></script>
+<script src="vendor/three-r128/postprocessing/UnrealBloomPass.js"></script>
+<!-- Partes do simulador (ordem importa) -->
+<script src="js/sim.js"></script>
+<script src="js/modelos/base.js"></script>
+<script src="js/modelos/natureza.js"></script>
+<script src="js/modelos/construcoes.js"></script>
+<script src="js/config.js"></script>
+<script src="js/som.js"></script>
+<script src="js/cena.js"></script>
+<script src="js/entorno.js"></script>
+<script src="js/camera.js"></script>
+<script src="js/interface.js"></script>
+<script src="js/camera-livre.js"></script>
+<script src="js/principal.js"></script>
+</body>
+</html>

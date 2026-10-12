@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-labelledby="t d">
+  <title id="t">Evolução — símbolo</title>
+  <desc id="d">Ilha vista de cima com uma linhagem que nasce na areia e se divide em dois ramos, azul e rosa.</desc>
+  <circle cx="32" cy="32" r="30.00" fill="#F3E2AB"/>
+  <circle cx="32" cy="32" r="30.00" fill="none" stroke="#E3CB86" stroke-width="1.20"/>
+  <circle cx="32" cy="32" r="23.50" fill="#2F9A5E"/>
+  <circle cx="26.00" cy="25.00" r="12.00" fill="#4DB577" opacity=".35"/>
+  <path d="M32.00 55.50 L32.00 39.00 M32.00 39.00 L20.00 23.00 M32.00 39.00 L44.00 23.00" stroke="#FFFFFF" stroke-width="4.60" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <path d="M32.00 48.00 L41.00 42.50" stroke="#FFFFFF" stroke-width="2.85" stroke-linecap="round" opacity=".7" fill="none"/>
+  <circle cx="20.00" cy="23.00" r="5.40" fill="#38BDF8" stroke="#FFFFFF" stroke-width="2.20"/>
+  <circle cx="44.00" cy="23.00" r="5.40" fill="#FB7185" stroke="#FFFFFF" stroke-width="2.20"/>
+</svg>
