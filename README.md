@@ -10,7 +10,7 @@ mutações. Ninguém programa quem é "melhor": a aptidão surge do comportament
 
 Um único arquivo HTML, sem instalação e sem build, que funciona offline.
 
-A interface usa tema claro e segue a identidade visual em `docs/IDENTIDADE_VISUAL.md`.
+A interface usa tema claro e a identidade visual do projeto.
 
 ## Como abrir
 
@@ -57,7 +57,7 @@ draw call. Para criar outro, veja o comentário no topo de `js/modelos/base.js`.
 
 ## Como funciona o modelo
 
-Detalhes, equações e parâmetros estão em `docs/MODELO.md`. Cada regra tem uma classe:
+Cada regra tem uma classe:
 **(1)** conhecimento científico estabelecido, **(2)** simplificação para viabilizar a simulação,
 **(3)** hipótese que depende de parâmetros, **(4)** decisão de design sem correspondência biológica direta.
 
@@ -78,13 +78,11 @@ Detalhes, equações e parâmetros estão em `docs/MODELO.md`. Cada regra tem um
 - Um "dia" não é uma geração real, e a ilha não tem escala real de espaço ou tempo.
 - Para quem come fruta, ser grande só custa energia: o tamanho diminui e as rosas costumam se extinguir quando competem
   com os azuis pelas mesmas frutas (exclusão competitiva). No preset de predação, as rosas viram predadoras e aí o tamanho
-  volta a valer a pena; mesmo assim, em parte das execuções os predadores somem da ilha. Ver
-  `docs/CHANGELOG_CIENTIFICO.md` (versões 2.0.0 e 2.1.0).
+  volta a valer a pena; mesmo assim, em parte das execuções os predadores somem da ilha.
 - A seca reduz só a **quantidade** de frutas. O caso real das tentilhas de Galápagos dependeu da **composição** das
   sementes, então o simulador não reproduz esse caso (o preset se chama "Secas seguidas numa ilha").
 - A extinção em massa mata ao acaso; no evento real (K-Pg) ela foi seletiva.
-- Os coeficientes são pontos de partida, não valores calibrados com dados reais. Fontes e limites em
-  `docs/FUNDAMENTACAO_CIENTIFICA.md`.
+- Os coeficientes são pontos de partida, não valores calibrados com dados reais.
 
 ## Desempenho
 
@@ -113,4 +111,3 @@ Usa [Three.js](https://threejs.org) r128.
 ## Licença
 
 Código sob [MIT](LICENSE). Textos, documentação e identidade visual sob [CC BY 4.0](LICENSE-CONTEUDO).
-As decisões do projeto estão em `docs/DECISOES.md`.
