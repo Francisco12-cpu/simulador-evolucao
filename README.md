@@ -2,7 +2,7 @@
 
 **Jogar agora:** https://francisco12-cpu.github.io/simulador-evolucao/
 
-![Ilha do simulador](assets/og-imagem.png)
+![Ilha do simulador](assets/og-imagem.jpg)
 
 Criaturas de duas espécies (azuis e rosas) saem da areia de uma ilha, procuram frutas e precisam voltar antes de a
 energia acabar. Quem volta com duas frutas tem um filho, que herda velocidade, tamanho, visão e clima ideal com pequenas
@@ -19,7 +19,7 @@ A interface usa tema claro e a identidade visual do projeto.
 
 Para publicar: o GitHub Pages serve a raiz da branch `main` sem configuração extra.
 
-Atalhos: **Espaço** pausa, **1–4** mudam a velocidade, **F** explora a ilha, **M** liga e desliga o som, **H** oculta a
+Atalhos: **Espaço** pausa, **1–4** mudam a velocidade, **F** explora a ilha, **M** liga e desliga o som (a música de fundo também pode ser desligada sozinha em Ajustes), **H** oculta a
 interface, **R** lê um resumo em texto (para leitores de tela). Com `index.html?debug=1` aparece um medidor de desempenho.
 
 ## Explorar a ilha

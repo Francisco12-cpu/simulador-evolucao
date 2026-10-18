@@ -221,5 +221,6 @@ function updateHUD(){
 function somIcone(){const b=$('bSom');b.classList.toggle('off',!Som.ligado);b.setAttribute('aria-pressed',String(Som.ligado));b.title=Som.ligado?'Som ligado (M)':'Som desligado (M)';}
 function alternarSom(){Som.alternar();somIcone();}
 $('bSom').addEventListener('click',e=>{e.stopPropagation();alternarSom();});
+$('musica').checked=Som.musica;$('musica').addEventListener('change',e=>Som.definirMusica(e.target.checked));
 document.addEventListener('click',e=>{if(e.target.closest&&e.target.closest('.btn,select,input[type=checkbox]'))Som.clique();});
 somIcone();
